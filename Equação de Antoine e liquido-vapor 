@@ -1,0 +1,98 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Exercício 7",
+      "provenance": [],
+      "authorship_tag": "ABX9TyMaGIt6zoa1Iimk+a4hVvWh",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Alvaro3110/Engenharia-Quimica/blob/main/Equa%C3%A7%C3%A3o%20de%20Antoine%20e%20liquido-vapor%20\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "whVa9uMIYLr2",
+        "outputId": "fa73f43f-93ce-4cbd-85f2-bf90951c91e1"
+      },
+      "source": [
+        "import numpy as np\n",
+        "from scipy.optimize import fsolve\n",
+        "\n",
+        "y1 = 0.6\n",
+        "y2 = 1-y1\n",
+        "K = 273.15\n",
+        "P = 1 #bar\n",
+        "# Equação de Antonie\n",
+        "\n",
+        "A = [9.0580,2154.90,-34.42] #Componente n-Butano\n",
+        "B = [8.9179,2032.76,-33.15] # Componente IsoButano\n",
+        "\n",
+        "#Insirir a temperatura em Kelvin.\n",
+        "def P1sat(T):\n",
+        "  return np.exp(A[0]-(A[1]/(T+A[2])))\n",
+        "def P2sat(T):\n",
+        "  return np.exp(B[0]-(B[1]/(T+B[2])))\n",
+        "K = 273.15\n",
+        "#print(\"Psat_1: \",P1sat(100),\" bar \")\n",
+        "#print(\"Psat_2: \",P2sat(100),\" bar\")\n",
+        "\n",
+        "#Solver\n",
+        "def f(z):\n",
+        "  T,x1,x2 = z\n",
+        "  f0 = y1*P-x1*P1sat(T)\n",
+        "  f1 = y2*P-x2*P2sat(T)\n",
+        "  f2 = x1+x2-1\n",
+        "  return [f0,f1,f2]\n",
+        "z =fsolve(f,([140,0.5,0.5]))  #Chute deve ser de 140, pois foi o que convergiu\n",
+        "\n",
+        "# Fração de Vapor\n",
+        "y_1 = (z[1]*P1sat(z[0]))/P\n",
+        "y_2 = (z[2]*P1sat(z[0]))/P\n",
+        "\n",
+        "#Saída de Dados\n",
+        "print(f'Temperatura: {z[0]:.2f}')\n",
+        "print(f'Fração molar do N-Butano: {z[1]:.2f}')\n",
+        "print(f'Fração molar do isoButano: {z[2]:.2f}')\n",
+        "print(f'Psat_1: {P1sat(z[0]):.2f}',' bar')\n",
+        "print(f'Psat_2: {P2sat(z[0]):.2f}',' bar')\n",
+        "print(f'y1 = {y_1:.2f}')\n",
+        "print(f'y2 = {y_2:.2f}')\n"
+      ],
+      "execution_count": 1,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "Temperatura: 268.44\n",
+            "Fração molar do N-Butano: 0.70\n",
+            "Fração molar do isoButano: 0.30\n",
+            "Psat_1: 0.86  bar\n",
+            "Psat_2: 1.32  bar\n",
+            "y1 = 0.60\n",
+            "y2 = 0.26\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    }
+  ]
+}
