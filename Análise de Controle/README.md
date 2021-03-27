@@ -1,7 +1,3 @@
-A documentação aqui inserida tem o intuito de instruir-lo sobre analise de controle quimicos.
+Análise de Controles Quimicos.
 
-Você vai encontrar algoritmos reponsaveis pelos processos de reatores:
-Batelada;
-Continuos.
-
-E com adendo de alguns conteúdos de calculo numérico.
+É uma máteria para habilitar o engenheiro quimico a pensar como solucionar os problemas mais comum encontrado na aréa
